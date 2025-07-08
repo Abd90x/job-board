@@ -1,9 +1,12 @@
+"use client";
 import { useEffect, useState } from "react";
 
 export const useIsDarkMode = () => {
   const [isDarkMode, setIsDarkMode] = useState(checkDarkMode());
 
   function checkDarkMode() {
+    if (typeof window === "undefined") return false;
+
     return document.body.classList.contains("dark");
   }
 
