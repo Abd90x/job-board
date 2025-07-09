@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import "@mdxeditor/editor/style.css";
 import "./globals.css";
 import ClerkProvider from "@/services/clerk/components/ClerkProvider";
 
