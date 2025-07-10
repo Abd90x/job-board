@@ -11,7 +11,7 @@ export const jobListingSchema = z
     title: z.string().min(1, "Required"),
     description: z.string().min(1, "Required"),
     experienceLevel: z.enum(experienceLevels),
-    locationRequirements: z.enum(locationRequirements),
+    locationRequirement: z.enum(locationRequirements),
     type: z.enum(jobListingTypes),
     wage: z.number().int().positive().min(1).nullable(),
     wageInterval: z.enum(wageIntervals),
@@ -26,9 +26,7 @@ export const jobListingSchema = z
   })
   .refine(
     (lisiting) => {
-      return (
-        lisiting.locationRequirements === "remote" || lisiting.city != null
-      );
+      return lisiting.locationRequirement === "remote" || lisiting.city != null;
     },
     {
       message: "Required for non-remote listings",
@@ -38,7 +36,7 @@ export const jobListingSchema = z
   .refine(
     (lisiting) => {
       return (
-        lisiting.locationRequirements === "remote" ||
+        lisiting.locationRequirement === "remote" ||
         lisiting.stateAbbreviation != null
       );
     },

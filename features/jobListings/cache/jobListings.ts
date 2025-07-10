@@ -15,12 +15,12 @@ export function getJobListingIdTag(id: string) {
 
 export function revalidateJobListingCache({
   id,
-  orgId,
+  organizationId,
 }: {
   id: string;
-  orgId: string;
+  organizationId: string;
 }) {
   revalidateTag(getJobListingGlobalTag());
-  revalidateTag(getJobListingOrganizationIdTag(orgId));
+  revalidateTag(getJobListingOrganizationIdTag(organizationId));
   revalidateTag(getJobListingIdTag(id));
 }

@@ -39,6 +39,8 @@ import StateSelectItems from "./StateSelectItems";
 import { MarkdownEditor } from "@/components/markdown/MarkdownEditor";
 import { Button } from "@/components/ui/button";
 import LoadingSwap from "@/components/LoadingSwap";
+import { createJobListing } from "../actions/actions";
+import { toast } from "sonner";
 
 const NONE_SELECTED_VALUE = "none";
 
@@ -53,14 +55,18 @@ const JobListingForm = () => {
       wage: null,
       wageInterval: "monthly",
       experienceLevel: "junior",
-      locationRequirements: "on-site",
+      locationRequirement: "on-site",
       type: "full-time",
     },
   });
   async function onSubmit(data: z.infer<typeof jobListingSchema>) {
-    await new Promise((res) => setTimeout(res, 1000));
-    console.log(data);
-    form.reset();
+    const res = await createJobListing(data);
+    if (res.error) {
+      toast.error(res.message);
+    } else {
+      toast.success("Job listing created successfully");
+      form.reset();
+    }
   }
 
   return (
@@ -190,7 +196,7 @@ const JobListingForm = () => {
             />
           </div>
           <FormField
-            name="locationRequirements"
+            name="locationRequirement"
             control={form.control}
             render={({ field }) => (
               <FormItem>
