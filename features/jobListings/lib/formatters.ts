@@ -100,7 +100,7 @@ export function formatJobListingStatus(status: JobListingStatus) {
     case "draft":
       return "Draft";
     case "published":
-      return "Published";
+      return "Active";
     case "delisted":
       return "Delisted";
     default:
