@@ -43,6 +43,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import NewJobListingApplicationForm from "@/features/jobListingsApplications/components/NewJobListingApplicationForm";
 
@@ -222,9 +223,9 @@ async function ApplyButton({ jobListingId }: { jobListingId: string }) {
 
   return (
     <Dialog>
-      <DialogTitle asChild>
+      <DialogTrigger asChild>
         <Button>Apply</Button>
-      </DialogTitle>
+      </DialogTrigger>
       <DialogContent className="md:max-w-3xl max-h-[calc(100%-2rem)] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle>Application</DialogTitle>
