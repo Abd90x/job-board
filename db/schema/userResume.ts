@@ -4,7 +4,9 @@ import { UserTable } from "./user";
 import { relations } from "drizzle-orm";
 
 export const UserResumeTable = pgTable("user_resume", {
-  userId: varchar().references(() => UserTable.id),
+  userId: varchar()
+    .references(() => UserTable.id)
+    .unique(),
   resumeFileUrl: varchar().notNull(),
   resumeFileKey: varchar().notNull(),
   aiSummary: varchar(),

@@ -6,7 +6,7 @@ type Props = {
 };
 
 const JobListingPage = async ({ params, searchParams }: Props) => {
-  return "ssss";
+  return null;
 };
 
 export default JobListingPage;
