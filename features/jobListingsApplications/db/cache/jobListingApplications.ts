@@ -19,7 +19,7 @@ export function getJobListingApplicationIdTag({
   return getIdTag("jobListingApplications", `${jobListingId}-${userId}`);
 }
 
-export function revalidateTagJobListingApplicationCache(id: {
+export function revalidateJobListingApplicationCache(id: {
   userId: string;
   jobListingId: string;
 }) {

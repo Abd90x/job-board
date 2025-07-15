@@ -13,7 +13,11 @@ import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { getJobListingIdTag } from "@/features/jobListings/cache/jobListings";
 import { db } from "@/db/db";
 import { and, eq } from "drizzle-orm";
-import { JobListingApplicationTable, JobListingTable } from "@/db/schema";
+import {
+  JobListingApplicationTable,
+  JobListingTable,
+  UserResumeTable,
+} from "@/db/schema";
 import { getOrganizationIdTag } from "@/features/organizations/db/cache/organizations";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { notFound } from "next/navigation";
@@ -32,6 +36,15 @@ import {
 import { SignUpButton } from "@/services/clerk/components/AuthButtons";
 import { getJobListingApplicationIdTag } from "@/features/jobListingsApplications/db/cache/jobListingApplications";
 import { differenceInDays } from "date-fns";
+import { getUserResumeIdTag } from "@/features/users/db/cache/userResumes";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import NewJobListingApplicationForm from "@/features/jobListingsApplications/components/NewJobListingApplicationForm";
 
 type Props = {
   params: Promise<{ jobListingId: string }>;
@@ -188,6 +201,53 @@ async function ApplyButton({ jobListingId }: { jobListingId: string }) {
       </div>
     );
   }
+
+  const userResume = await getUserResume(userId);
+
+  if (!userResume) {
+    return (
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button>Apply</Button>
+        </PopoverTrigger>
+        <PopoverContent className="flex flex-col gap-2">
+          <p>You need to upload your resume to apply for this job.</p>
+          <Button asChild>
+            <Link href="/user-settings/resume">Upload Resume</Link>
+          </Button>
+        </PopoverContent>
+      </Popover>
+    );
+  }
+
+  return (
+    <Dialog>
+      <DialogTitle asChild>
+        <Button>Apply</Button>
+      </DialogTitle>
+      <DialogContent className="md:max-w-3xl max-h-[calc(100%-2rem)] overflow-hidden flex flex-col">
+        <DialogHeader>
+          <DialogTitle>Application</DialogTitle>
+          <DialogDescription>
+            Applying for a job cannot be undone and is something you can only do
+            once per job listing.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="flex-1 overflow-y-auto">
+          <NewJobListingApplicationForm jobListingId={jobListingId} />
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+async function getUserResume(userId: string) {
+  "use cache";
+  cacheTag(getUserResumeIdTag(userId));
+
+  return db.query.UserResumeTable.findFirst({
+    where: eq(UserResumeTable.userId, userId),
+  });
 }
 
 async function getJobListingApplication(jobListingId: string, userId: string) {
