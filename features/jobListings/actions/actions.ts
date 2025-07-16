@@ -49,7 +49,11 @@ export async function createJobListing(
     status: "draft",
   });
 
-  redirect(`/employer/job-listings/${jobListing.id}`);
+  return {
+    error: false,
+    message: "Job listing created successfully",
+    jobListingId: jobListing.id,
+  };
 }
 
 export async function updateJobListing(
@@ -88,7 +92,11 @@ export async function updateJobListing(
     organizationId: orgId,
   });
 
-  redirect(`/employer/job-listings/${updatedJobListing.id}`);
+  return {
+    error: false,
+    message: "Job listing updated successfully",
+    jobListingId: updatedJobListing.id,
+  };
 }
 
 export async function toggleJobListingStatus(id: string) {

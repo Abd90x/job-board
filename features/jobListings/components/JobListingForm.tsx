@@ -42,6 +42,7 @@ import LoadingSwap from "@/components/LoadingSwap";
 import { createJobListing, updateJobListing } from "../actions/actions";
 import { toast } from "sonner";
 import { JobListingTable } from "@/db/schema";
+import { useRouter } from "next/navigation";
 
 const NONE_SELECTED_VALUE = "none";
 
@@ -62,6 +63,7 @@ const JobListingForm = ({
     | "locationRequirement"
   >;
 }) => {
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(jobListingSchema),
     defaultValues: jobListing ?? {
@@ -84,6 +86,9 @@ const JobListingForm = ({
     const res = await action(data);
     if (res.error) {
       toast.error(res.message);
+    } else {
+      toast.success(res.message);
+      router.push(`/employer/job-listings/${res.jobListingId}`);
     }
   }
 
