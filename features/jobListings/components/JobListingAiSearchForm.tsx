@@ -15,8 +15,13 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import LoadingSwap from "@/components/LoadingSwap";
+import { toast } from "sonner";
+import { getAiJobListingsResult } from "../actions/actions";
+import { useRouter } from "next/navigation";
 
 const JobListingAiSearchForm = () => {
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(jobListingAiSearchSchema),
     defaultValues: {
@@ -24,8 +29,18 @@ const JobListingAiSearchForm = () => {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof jobListingAiSearchSchema>) {
-    console.log(values);
+  async function onSubmit(data: z.infer<typeof jobListingAiSearchSchema>) {
+    const result = await getAiJobListingsResult(data);
+
+    if (result.error) {
+      toast.error(result.message);
+      return;
+    }
+
+    const params = new URLSearchParams();
+    result.jobIds.forEach((jobId) => params.append("jobIds", jobId));
+
+    router.push(`/?${params.toString()}`);
   }
 
   return (
