@@ -1,5 +1,6 @@
 "use client";
 
+import { ModeToggle } from "@/components/theme/ThemeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -70,6 +71,10 @@ export const SidebarUserButtonClient = ({ user }: { user: User }) => {
             <Link href="/user-settings/notifications">
               <SettingsIcon className="me-1" /> Settings
             </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem asChild>
+            <ModeToggle />
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />

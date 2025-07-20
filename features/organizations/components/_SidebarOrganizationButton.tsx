@@ -1,5 +1,6 @@
 "use client";
 
+import { ModeToggle } from "@/components/theme/ThemeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -98,6 +99,10 @@ export const SidebarOrganizationButtonClient = ({
               <ArrowLeftRightIcon className="me-1" />
               Switch Organizations
             </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem asChild>
+            <ModeToggle />
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />

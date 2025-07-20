@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import {
   Collapsible,
   CollapsibleContent,
@@ -15,6 +16,7 @@ import {
 } from "@/components/ui/sidebar";
 import { JobListingStatus, JobListingTable } from "@/db/schema";
 import { formatJobListingStatus } from "@/features/jobListings/lib/formatters";
+import { cn } from "@/lib/utils";
 import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -68,7 +70,9 @@ function JobListingMenuItem({ id, title, applicationCount }: JobListing) {
     <SidebarMenuSubItem>
       <SidebarMenuSubButton isActive={jobListingId === id} asChild>
         <Link href={`/employer/job-listings/${id}`}>
-          <span className="truncate">{title}</span>
+          <span className={cn(applicationCount && "pe-3", "truncate")}>
+            {title}
+          </span>
           {applicationCount > 0 && (
             <div className="absolute end-2 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
               {applicationCount}

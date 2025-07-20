@@ -35,7 +35,7 @@ const DataTableFacetedFilter = <TData, TValue, OValue>({
 
   return (
     <Popover>
-      <PopoverTrigger>
+      <PopoverTrigger asChild>
         <Button disabled={disabled} variant="outline" size="sm">
           {selectedValues.size > 0 && (
             <Badge variant="secondary" size="sm">
