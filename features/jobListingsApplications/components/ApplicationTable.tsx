@@ -10,7 +10,7 @@ import {
   UserResumeTable,
   UserTable,
 } from "@/db/schema";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Table } from "@tanstack/react-table";
 import { ReactNode, useOptimistic, useState, useTransition } from "react";
 import { sortApplicationsByStage } from "../lib/utils";
 import { StageIcon } from "./StageIcon";
@@ -40,6 +40,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Link from "next/link";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import DataTableFacetedFilter from "@/components/dataTable/DataTableFacetedFilter";
 
 type Application = Pick<
   typeof JobListingApplicationTable.$inferSelect,
@@ -156,18 +158,81 @@ const ApplicationTable = ({
   applications,
   canUpdateRating,
   canUpdateStage,
+  noResultsMessage = "No Applications",
+  disabledToolbar = false,
 }: {
   applications: Application[];
   canUpdateRating: boolean;
   canUpdateStage: boolean;
+  noResultsMessage?: ReactNode;
+  disabledToolbar?: boolean;
 }) => {
   return (
     <DataTable
       data={applications}
       columns={getColumns(canUpdateRating, canUpdateStage)}
+      noResultsMessage={noResultsMessage}
+      ToolbarComponent={disabledToolbar ? DisabledToolbar : Toolbar}
+      initialFilters={[
+        {
+          id: "stage",
+          value: applicationStages.filter((stage) => stage !== "denied"),
+        },
+      ]}
     />
   );
 };
+
+function DisabledToolbar<T>({ table }: { table: Table<T> }) {
+  return <Toolbar table={table} disabled />;
+}
+
+function Toolbar<T>({
+  table,
+  disabled,
+}: {
+  table: Table<T>;
+  disabled?: boolean;
+}) {
+  const hiddenRows = table.getCoreRowModel().rows.length - table.getRowCount();
+
+  return (
+    <div className="flex items-center gap-2">
+      {table.getColumn("stage") && (
+        <DataTableFacetedFilter
+          disabled={disabled}
+          column={table.getColumn("stage")}
+          title="Stage"
+          options={applicationStages
+            .toSorted(sortApplicationsByStage)
+            .map((s) => ({
+              label: <StageDetails stage={s} />,
+              value: s,
+              key: s,
+            }))}
+        />
+      )}
+      {table.getColumn("rating") && (
+        <DataTableFacetedFilter
+          disabled={disabled}
+          column={table.getColumn("rating")}
+          title="Rating"
+          options={RATING_OPTIONS.map((r) => ({
+            label: <RatingIcons rating={r} />,
+            value: r,
+            key: r ?? "none",
+          }))}
+        />
+      )}
+
+      {hiddenRows > 0 && (
+        <div className="text-sm text-muted-foreground ms-2">
+          {hiddenRows} {hiddenRows === 1 ? "row" : "rows"} hidden
+        </div>
+      )}
+    </div>
+  );
+}
 
 function StageCell({
   canUpdate,
@@ -383,6 +448,18 @@ function ActionCell({
         </Dialog>
       )}
     </>
+  );
+}
+
+export function SekeletonApplicationTable() {
+  return (
+    <ApplicationTable
+      applications={[]}
+      canUpdateRating={false}
+      canUpdateStage={false}
+      noResultsMessage={<LoadingSpinner className="size-12" />}
+      disabledToolbar={true}
+    />
   );
 }
 

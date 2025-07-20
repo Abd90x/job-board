@@ -47,8 +47,8 @@ import { Separator } from "@/components/ui/separator";
 import { getUserIdTag } from "@/features/users/db/cache/users";
 import { getUserResumeIdTag } from "@/features/users/db/cache/userResumes";
 import ApplicationTable from "@/features/jobListingsApplications/components/ApplicationTable";
-import SekeletonApplicationTable from "@/features/jobListingsApplications/components/SekeletonApplicationTable";
 import { getJobListingApplicationJobListingTag } from "@/features/jobListingsApplications/db/cache/jobListingApplications";
+import { SekeletonApplicationTable } from "@/features/jobListingsApplications/components/ApplicationTable";
 
 type Props = {
   params: Promise<{ jobListingId: string }>;
