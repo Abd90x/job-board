@@ -1,7 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { db } from "@/db/db";
-import { JobListingStatus, JobListingTable } from "@/db/schema";
+import {
+  JobListingApplicationTable,
+  JobListingStatus,
+  JobListingTable,
+} from "@/db/schema";
 import { getJobListingIdTag } from "@/features/jobListings/cache/jobListings";
 import JobListingBadges from "@/features/jobListings/components/JobListingBadges";
 import { formatJobListingStatus } from "@/features/jobListings/lib/formatters";
@@ -39,6 +43,12 @@ import {
   toggleJobListingFeatured,
   toggleJobListingStatus,
 } from "@/features/jobListings/actions/actions";
+import { Separator } from "@/components/ui/separator";
+import { getUserIdTag } from "@/features/users/db/cache/users";
+import { getUserResumeIdTag } from "@/features/users/db/cache/userResumes";
+import ApplicationTable from "@/features/jobListingsApplications/components/ApplicationTable";
+import SekeletonApplicationTable from "@/features/jobListingsApplications/components/SekeletonApplicationTable";
+import { getJobListingApplicationJobListingTag } from "@/features/jobListingsApplications/db/cache/jobListingApplications";
 
 type Props = {
   params: Promise<{ jobListingId: string }>;
@@ -118,6 +128,14 @@ async function SuspendedPage({ params }: Props) {
         }
         dialogTitle="Description"
       />
+
+      <Separator />
+      <div className="space-y-6">
+        <h2 className="text-xl font-semibold">Applications</h2>
+        <Suspense fallback={<SekeletonApplicationTable />}>
+          <Applications jobListingId={jobListingId} />
+        </Suspense>
+      </div>
     </div>
   );
 }
@@ -266,6 +284,38 @@ function featuredToggleButtonText(isFeatured: boolean) {
   );
 }
 
+async function Applications({ jobListingId }: { jobListingId: string }) {
+  const applications = await getJobListingApplications(jobListingId);
+
+  return (
+    <ApplicationTable
+      applications={applications.map((a) => ({
+        ...a,
+        user: {
+          ...a.user,
+          resume: a.user.resume
+            ? {
+                ...a.user.resume,
+                markdownSummary: a.user.resume.aiSummary ? (
+                  <MarkdownRenderer source={a.user.resume.aiSummary} />
+                ) : null,
+              }
+            : null,
+        },
+        coverLetterMarkdown: a.coverLetter ? (
+          <MarkdownRenderer source={a.coverLetter} />
+        ) : null,
+      }))}
+      canUpdateRating={await hasOrgUserPermission(
+        "job_listing_applications:change_rating"
+      )}
+      canUpdateStage={await hasOrgUserPermission(
+        "job_listing_applications:change_stage"
+      )}
+    />
+  );
+}
+
 async function getJobListing(id: string, orgId: string) {
   "use cache";
   cacheTag(getJobListingIdTag(id));
@@ -276,4 +326,44 @@ async function getJobListing(id: string, orgId: string) {
       eq(JobListingTable.organizationId, orgId)
     ),
   });
+}
+
+async function getJobListingApplications(jobListingId: string) {
+  "use cache";
+  cacheTag(getJobListingApplicationJobListingTag(jobListingId));
+
+  const data = await db.query.JobListingApplicationTable.findMany({
+    where: eq(JobListingApplicationTable.jobListingId, jobListingId),
+    columns: {
+      coverLetter: true,
+      createdAt: true,
+      stage: true,
+      rating: true,
+      jobListingId: true,
+    },
+    with: {
+      user: {
+        columns: {
+          id: true,
+          name: true,
+          imageUrl: true,
+        },
+        with: {
+          resume: {
+            columns: {
+              resumeFileUrl: true,
+              aiSummary: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  data.forEach(({ user }) => {
+    cacheTag(getUserIdTag(user.id));
+    cacheTag(getUserResumeIdTag(user.id));
+  });
+
+  return data;
 }
