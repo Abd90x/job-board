@@ -1,12 +1,7 @@
-import React from "react";
+import JobBoardSidebar from "@/app/(job-seeker)/_shared/JobBoardSidebar";
 
-type Props = {
-  params: Promise<{ jobListingId: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] }>;
-};
-
-const JobListingPage = async ({ params, searchParams }: Props) => {
-  return null;
+const JobListingPage = async () => {
+  return <JobBoardSidebar />;
 };
 
 export default JobListingPage;
