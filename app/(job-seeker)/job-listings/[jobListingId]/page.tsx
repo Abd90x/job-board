@@ -9,7 +9,7 @@ import { IsBreakpoint } from "@/components/IsBreakpoint";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import ClientSheet from "./_ClientSheet";
 import { SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import { unstable_cacheTag as cacheTag } from "next/cache";
 import { getJobListingIdTag } from "@/features/jobListings/cache/jobListings";
 import { db } from "@/db/db";
 import { and, eq } from "drizzle-orm";

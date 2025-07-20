@@ -19,7 +19,7 @@ import {
   Trash2Icon,
 } from "lucide-react";
 import { and, eq } from "drizzle-orm";
-import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import { unstable_cacheTag as cacheTag } from "next/cache";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React, { ReactNode, Suspense } from "react";
@@ -49,6 +49,7 @@ import { getUserResumeIdTag } from "@/features/users/db/cache/userResumes";
 import ApplicationTable from "@/features/jobListingsApplications/components/ApplicationTable";
 import { getJobListingApplicationJobListingTag } from "@/features/jobListingsApplications/db/cache/jobListingApplications";
 import { SekeletonApplicationTable } from "@/features/jobListingsApplications/components/ApplicationTable";
+import JobListingPageSkeleton from "@/components/skeleton/JobListingPageSkeleton";
 
 type Props = {
   params: Promise<{ jobListingId: string }>;
@@ -56,7 +57,7 @@ type Props = {
 
 const JobListingPage = (props: Props) => {
   return (
-    <Suspense>
+    <Suspense fallback={<JobListingPageSkeleton />}>
       <SuspendedPage {...props} />
     </Suspense>
   );

@@ -16,7 +16,7 @@ import {
 import { db } from "@/db/db";
 import { and, eq } from "drizzle-orm";
 import { JobListingTable } from "@/db/schema";
-import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import { unstable_cacheTag as cacheTag } from "next/cache";
 import {
   getJobListingGlobalTag,
   getJobListingIdTag,

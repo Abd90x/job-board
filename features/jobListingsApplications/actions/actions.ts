@@ -15,7 +15,7 @@ import {
   getCurrentUser,
 } from "@/services/clerk/lib/getCurrentAuth";
 import { and, eq } from "drizzle-orm";
-import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import { unstable_cacheTag as cacheTag } from "next/cache";
 import { z } from "zod";
 import {
   insertJobListingApplication,

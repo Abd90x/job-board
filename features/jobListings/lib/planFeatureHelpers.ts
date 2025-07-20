@@ -1,5 +1,5 @@
 import { getCurrentOrganization } from "@/services/clerk/lib/getCurrentAuth";
-import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import { unstable_cacheTag as cacheTag } from "next/cache";
 import { getJobListingOrganizationIdTag } from "../cache/jobListings";
 import { db } from "@/db/db";
 import { JobListingTable } from "@/db/schema";

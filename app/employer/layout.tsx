@@ -25,10 +25,11 @@ import {
   JobListingTable,
 } from "@/db/schema";
 import { count, desc, eq } from "drizzle-orm";
-import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import { unstable_cacheTag as cacheTag } from "next/cache";
 import { getJobListingApplicationJobListingTag } from "@/features/jobListingsApplications/db/cache/jobListingApplications";
 import { sortJobListingStatus } from "@/features/jobListings/lib/utils";
 import JobListingMenuGroup from "./_JobListingMenuGroup";
+import JobListingMenuSkeleton from "@/components/skeleton/JobListingMenuSkeleton";
 
 export default function EmployerLayout({ children }: { children: ReactNode }) {
   return (
@@ -60,7 +61,7 @@ async function LayoutSuspense({ children }: { children: ReactNode }) {
               </SidebarGroupAction>
             </AsyncIf>
             <SidebarGroupContent className="group-data-[state=collapsed]:hidden">
-              <Suspense>
+              <Suspense fallback={<JobListingMenuSkeleton />}>
                 <JobListingsMenu orgId={orgId} />
               </Suspense>
             </SidebarGroupContent>

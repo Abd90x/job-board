@@ -12,7 +12,7 @@ import { getCurrentUser } from "@/services/clerk/lib/getCurrentAuth";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import { unstable_cacheTag as cacheTag } from "next/cache";
 import { getUserResumeIdTag } from "@/features/users/db/cache/userResumes";
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";

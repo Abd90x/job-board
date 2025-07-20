@@ -22,7 +22,7 @@ import { convertSearchParamsToString } from "@/lib/convertSearchParamsToString";
 import { cn } from "@/lib/utils";
 import { differenceInDays } from "date-fns";
 import { and, desc, eq, ilike, or, SQL } from "drizzle-orm";
-import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import { unstable_cacheTag as cacheTag } from "next/cache";
 import Link from "next/link";
 import { connection } from "next/server";
 import React, { Suspense } from "react";
