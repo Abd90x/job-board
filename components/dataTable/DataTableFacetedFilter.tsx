@@ -1,5 +1,4 @@
 import { Column } from "@tanstack/react-table";
-import { Key, ReactNode } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
