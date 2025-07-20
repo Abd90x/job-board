@@ -1,3 +1,4 @@
+import JobListingItemSkeleton from "@/components/skeleton/JobListingItemSkeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -49,7 +50,7 @@ const searchParamsSchema = z.object({
 
 const JobListingItems = (props: Props) => {
   return (
-    <Suspense>
+    <Suspense fallback={<JobListingItemSkeleton />}>
       <SuspendedComponent {...props} />
     </Suspense>
   );
