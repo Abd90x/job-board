@@ -58,7 +58,7 @@ const JobListingBadges = ({
           {...badgeProps}
           className={cn(
             className,
-            "border-featured bg-featured/50 text-featured-foreground"
+            "border-featured bg-featured/20 text-featured"
           )}
         >
           <StarIcon />

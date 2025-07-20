@@ -194,7 +194,7 @@ function JobListingListItem({
     <Card
       className={cn(
         "@container",
-        jobListing.isFeatured && "border-featured bg-featured/20"
+        jobListing.isFeatured && "border-featured bg-featured/20 text-featured"
       )}
     >
       <CardHeader>
