@@ -1,6 +1,15 @@
-import { drizzle } from "drizzle-orm/node-postgres";
-import { env } from "@/data/env/server";
+// Local DB
+// import { drizzle } from "drizzle-orm/node-postgres";
+// import { env } from "@/data/env/server";
+// import * as schema from "@/db/schema";
 
-import * as schema from "@/db/schema";
+// Neon DB
+import { drizzle } from "drizzle-orm/neon-http";
+import { neon } from "@neondatabase/serverless";
 
-export const db = drizzle(env.DATABASE_URL, { schema });
+const sql = neon(process.env.DATABASE_URL!);
+
+export const db = drizzle({ client: sql });
+
+// Local DB
+// export const db = drizzle(env.DATABASE_URL, { schema });
