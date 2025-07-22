@@ -194,7 +194,7 @@ function JobListingListItem({
     <Card
       className={cn(
         "@container",
-        jobListing.isFeatured && "border-featured bg-featured/20 text-featured"
+        jobListing.isFeatured && "border-primary bg-primary/5 text-primary"
       )}
     >
       <CardHeader>
@@ -210,9 +210,7 @@ function JobListingListItem({
           </Avatar>
           <div className="flex flex-col gap-1">
             <CardTitle className="text-xl">{jobListing.title}</CardTitle>
-            <CardDescription className="text-base">
-              {organization.name}
-            </CardDescription>
+            <CardDescription>{organization.name}</CardDescription>
 
             {jobListing.postedAt && (
               <div className="text-sm font-medium text-primary @min-md:hidden">
@@ -235,7 +233,7 @@ function JobListingListItem({
       <CardContent className="flex flex-wrap gap-2">
         <JobListingBadges
           jobListing={jobListing}
-          className={jobListing.isFeatured ? "border-primary/35" : undefined}
+          className={jobListing.isFeatured ? "border-primary" : undefined}
         />
       </CardContent>
     </Card>

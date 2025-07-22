@@ -8,7 +8,6 @@ import {
   formatLocationRequirement,
   formatWage,
 } from "../lib/formatters";
-import { cn } from "@/lib/utils";
 import {
   BanknoteIcon,
   BuildingIcon,
@@ -54,13 +53,7 @@ const JobListingBadges = ({
   return (
     <>
       {isFeatured && (
-        <Badge
-          {...badgeProps}
-          className={cn(
-            className,
-            "border-featured bg-featured/20 text-featured"
-          )}
-        >
+        <Badge {...badgeProps} variant="default" className={className}>
           <StarIcon />
           Featured
         </Badge>
