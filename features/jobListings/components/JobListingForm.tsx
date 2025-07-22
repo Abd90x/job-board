@@ -35,7 +35,6 @@ import {
   formatLocationRequirement,
   formatWageInterval,
 } from "../lib/formatters";
-import StateSelectItems from "./StateSelectItems";
 import { MarkdownEditor } from "@/components/markdown/MarkdownEditor";
 import { Button } from "@/components/ui/button";
 import LoadingSwap from "@/components/LoadingSwap";
@@ -43,6 +42,7 @@ import { createJobListing, updateJobListing } from "../actions/actions";
 import { toast } from "sonner";
 import { JobListingTable } from "@/db/schema";
 import { useRouter } from "next/navigation";
+import CountriesSelect from "./CountriesSelect";
 
 const NONE_SELECTED_VALUE = "none";
 
@@ -55,7 +55,7 @@ const JobListingForm = ({
     | "description"
     | "experienceLevel"
     | "id"
-    | "stateAbbreviation"
+    | "country"
     | "type"
     | "wage"
     | "wageInterval"
@@ -69,7 +69,7 @@ const JobListingForm = ({
     defaultValues: jobListing ?? {
       title: "",
       description: "",
-      stateAbbreviation: null,
+      country: null,
       city: null,
       wage: null,
       wageInterval: "monthly",
@@ -172,25 +172,11 @@ const JobListingForm = ({
         <div className="grid grid-cols-1 @md:grid-cols-2 gap-x-4 gap-y-6 items-start">
           <div className="grid grid-cols-1 @xs:grid-cols-2 gap-x-2 gap-y-6 items-start">
             <FormField
-              name="city"
+              name="country"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>City</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ""} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              name="stateAbbreviation"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>State</FormLabel>
+                  <FormLabel>Country</FormLabel>
                   <Select
                     value={field.value ?? ""}
                     onValueChange={(val) =>
@@ -211,9 +197,23 @@ const JobListingForm = ({
                           None
                         </SelectItem>
                       )}
-                      <StateSelectItems />
+                      <CountriesSelect />
                     </SelectContent>
                   </Select>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="city"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>City</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ""} />
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />

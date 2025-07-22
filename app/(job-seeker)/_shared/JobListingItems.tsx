@@ -111,7 +111,7 @@ async function getJobListings(
 
   if (searchParams.state)
     whereConditions.push(
-      ilike(JobListingTable.stateAbbreviation, `%${searchParams.state}%`)
+      ilike(JobListingTable.country, `%${searchParams.state}%`)
     );
 
   if (searchParams.experience)
@@ -169,7 +169,7 @@ function JobListingListItem({
   jobListing: Pick<
     typeof JobListingTable.$inferSelect,
     | "title"
-    | "stateAbbreviation"
+    | "country"
     | "city"
     | "wage"
     | "wageInterval"
@@ -189,6 +189,8 @@ function JobListingListItem({
     .splice(0, 4)
     .map((name) => name[0])
     .join("");
+
+  console.log(organization);
 
   return (
     <Card
@@ -210,7 +212,9 @@ function JobListingListItem({
           </Avatar>
           <div className="flex flex-col gap-1">
             <CardTitle className="text-xl">{jobListing.title}</CardTitle>
-            <CardDescription>{organization.name}</CardDescription>
+            <CardDescription className="text-muted-foreground font-medium">
+              {organization.name}
+            </CardDescription>
 
             {jobListing.postedAt && (
               <div className="text-sm font-medium text-primary @min-md:hidden">

@@ -15,7 +15,7 @@ export const jobListingSchema = z
     type: z.enum(jobListingTypes),
     wage: z.number().int().positive().min(1).nullable(),
     wageInterval: z.enum(wageIntervals).nullable(),
-    stateAbbreviation: z
+    country: z
       .string()
       .transform((val) => (val.trim() === "" ? null : val))
       .nullable(),
@@ -36,13 +36,12 @@ export const jobListingSchema = z
   .refine(
     (lisiting) => {
       return (
-        lisiting.locationRequirement === "remote" ||
-        lisiting.stateAbbreviation != null
+        lisiting.locationRequirement === "remote" || lisiting.country != null
       );
     },
     {
       message: "Required for non-remote listings",
-      path: ["stateAbbreviation"],
+      path: ["country"],
     }
   );
 

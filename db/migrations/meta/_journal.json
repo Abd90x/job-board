@@ -15,6 +15,13 @@
       "when": 1752601535338,
       "tag": "0001_crazy_jackpot",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1753212341819,
+      "tag": "0002_special_sugar_man",
+      "breakpoints": true
     }
   ]
 }

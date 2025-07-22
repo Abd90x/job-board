@@ -22,7 +22,7 @@ type JobListing = Pick<
   | "id"
   | "title"
   | "city"
-  | "stateAbbreviation"
+  | "country"
   | "type"
   | "experienceLevel"
   | "wage"
@@ -101,7 +101,7 @@ function getBadges(job: JobListing) {
     formatJobTypes(job.type),
   ];
 
-  if (job.city != null || job.stateAbbreviation != null) {
+  if (job.city != null || job.country != null) {
     badges.unshift(formatLocationRequirement(job.locationRequirement));
   }
 
@@ -120,7 +120,7 @@ DailyJobListingsEmail.PreviewProps = {
       wage: 100000,
       wageInterval: "yearly",
       city: "San Francisco",
-      stateAbbreviation: "CA",
+      country: "United States",
       experienceLevel: "senior",
       type: "full-time",
       locationRequirement: "remote",
@@ -132,7 +132,7 @@ DailyJobListingsEmail.PreviewProps = {
       wage: 100000,
       wageInterval: "hourly",
       city: "San Francisco",
-      stateAbbreviation: "CA",
+      country: "United States",
       experienceLevel: "junior",
       type: "full-time",
       locationRequirement: "remote",

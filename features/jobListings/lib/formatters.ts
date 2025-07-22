@@ -54,17 +54,17 @@ export function formatLocationRequirement(location: LocationRequirement) {
 }
 
 export function formatJobListingLocation({
-  stateAbbreviation,
+  country,
   city,
 }: {
-  stateAbbreviation: string | null;
+  country: string | null;
   city: string | null;
 }) {
-  if (!stateAbbreviation && !city) return "None";
+  if (!country && !city) return "None";
 
   const locationParts = [];
   if (city) locationParts.push(city);
-  if (stateAbbreviation) locationParts.push(stateAbbreviation.toUpperCase());
+  if (country) locationParts.push(country);
 
   return locationParts.join(", ");
 }

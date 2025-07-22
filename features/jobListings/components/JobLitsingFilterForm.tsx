@@ -33,7 +33,7 @@ import {
   formatJobTypes,
   formatLocationRequirement,
 } from "../lib/formatters";
-import StateSelectItems from "./StateSelectItems";
+import StateSelectItems from "./CountriesSelect";
 import { Button } from "@/components/ui/button";
 import LoadingSwap from "@/components/LoadingSwap";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -43,7 +43,7 @@ const ANY_VALUE = "any";
 const jobListingFilterSchema = z.object({
   title: z.string().optional(),
   city: z.string().optional(),
-  stateAbbreviation: z.string().or(z.literal(ANY_VALUE)).optional(),
+  country: z.string().or(z.literal(ANY_VALUE)).optional(),
   experienceLevel: z.enum(experienceLevels).or(z.literal(ANY_VALUE)).optional(),
   locationRequirement: z
     .enum(locationRequirements)
@@ -65,7 +65,7 @@ const JobLitsingFilterForm = () => {
     defaultValues: {
       title: searchParams.get("title") ?? "",
       city: searchParams.get("city") ?? "",
-      stateAbbreviation: searchParams.get("state") ?? ANY_VALUE,
+      country: searchParams.get("state") ?? ANY_VALUE,
       experienceLevel:
         (searchParams.get("experience") as ExperienceLevel) ?? ANY_VALUE,
       locationRequirement:
@@ -79,8 +79,8 @@ const JobLitsingFilterForm = () => {
 
     if (data.title) newParams.set("title", data.title);
     if (data.city) newParams.set("city", data.city);
-    if (data.stateAbbreviation && data.stateAbbreviation !== ANY_VALUE)
-      newParams.set("state", data.stateAbbreviation);
+    if (data.country && data.country !== ANY_VALUE)
+      newParams.set("country", data.country);
     if (data.experienceLevel && data.experienceLevel !== ANY_VALUE)
       newParams.set("experience", data.experienceLevel);
     if (data.locationRequirement && data.locationRequirement !== ANY_VALUE)
@@ -155,7 +155,7 @@ const JobLitsingFilterForm = () => {
         />
 
         <FormField
-          name="stateAbbreviation"
+          name="country"
           control={form.control}
           render={({ field }) => (
             <FormItem>

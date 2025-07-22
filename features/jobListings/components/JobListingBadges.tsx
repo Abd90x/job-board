@@ -14,15 +14,16 @@ import {
   GraduationCapIcon,
   HourglassIcon,
   MapPinIcon,
-  StarIcon,
+  Sparkles,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type Props = {
   jobListing: Pick<
     typeof JobListingTable.$inferSelect,
     | "wage"
     | "wageInterval"
-    | "stateAbbreviation"
+    | "country"
     | "city"
     | "type"
     | "experienceLevel"
@@ -36,7 +37,7 @@ const JobListingBadges = ({
   jobListing: {
     wage,
     wageInterval,
-    stateAbbreviation,
+    country,
     city,
     type,
     experienceLevel,
@@ -53,8 +54,14 @@ const JobListingBadges = ({
   return (
     <>
       {isFeatured && (
-        <Badge {...badgeProps} variant="default" className={className}>
-          <StarIcon />
+        <Badge
+          {...badgeProps}
+          className={cn(
+            "bg-gradient-to-bl from-primary to-primary/50 border-none text-white order-first",
+            className
+          )}
+        >
+          <Sparkles fill="currentColor" />
           Featured
         </Badge>
       )}
@@ -65,10 +72,10 @@ const JobListingBadges = ({
           {formatWage(wage, wageInterval)}
         </Badge>
       )}
-      {stateAbbreviation && city && (
+      {country && city && (
         <Badge {...badgeProps}>
           <MapPinIcon className="size-10" />
-          {formatJobListingLocation({ stateAbbreviation, city })}
+          {formatJobListingLocation({ country, city })}
         </Badge>
       )}
 
